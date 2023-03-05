@@ -1,4 +1,5 @@
 import pynput
+import numpy
 import time
 import json
 
@@ -10,7 +11,8 @@ class Config:
     with open('config.json') as f:
         config = json.load(f)
         keybind = config['keybind']
-        cps = config['cps']
+        min = config['min']
+        max = config['max']
 
 
 def on_press(key):
@@ -32,7 +34,9 @@ def main():
     keyboardlistener.start()
 
     lastTime = time.time()
-    delay = 1 / Config.cps  # big brain optimisation
+    delay = 1 / Config.min  # big brain optimisation
+
+    rng = numpy.random.default_rng(seed=69)
 
     while True:
         if running:
@@ -41,6 +45,9 @@ def main():
             if currentTime - lastTime > delay:
                 mouse.click(pynput.mouse.Button.left)
                 lastTime = currentTime
+
+                delay = 1 / rng.integers(low=Config.min, high=Config.max)
+                print(delay)
 
 
 main()
