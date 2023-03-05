@@ -47,7 +47,6 @@ def main():
                 lastTime = currentTime
 
                 delay = 1 / rng.integers(low=Config.min, high=Config.max)
-                print(delay)
 
 
 main()
