@@ -1,5 +1,4 @@
-from pynput.mouse import Controller, Button
-import keyboard
+import pynput
 import time
 
 running = False
@@ -8,18 +7,23 @@ keybind = 'r'
 cps = 15
 
 
-def toggle():
-    global running
-    running = not running
-    if running:
-        print('Enabled')
-    else:
-        print('Disabled')
+def toggle(key):
+    if key == pynput.keyboard.KeyCode.from_char(keybind):
+        global running
+
+        running = not running
+        if running:
+            print('Enabled')
+        else:
+            print('Disabled')
 
 
 def main():
-    mouse = Controller()
-    keyboard.on_press_key(keybind, lambda _: toggle())
+    mouse = pynput.mouse.Controller()
+    keyboard = pynput.keyboard
+
+    keyboardlistener = keyboard.Listener(on_press=toggle)
+    keyboardlistener.start()
 
     lastTime = time.time()
     delay = 1 / cps  # big brain optimisation
@@ -29,7 +33,7 @@ def main():
             currentTime = time.time()
 
             if currentTime - lastTime > delay:
-                mouse.click(Button.left)
+                mouse.click(pynput.mouse.Button.left)
                 lastTime = currentTime
 
 
