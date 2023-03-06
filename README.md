@@ -1,2 +1,2 @@
 # OnionClicker
-simple, undetectable autoclicker for minecraft
+baller, undetectable autoclicker for minecraft
